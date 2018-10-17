@@ -43,14 +43,27 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
         this.course$ = this.store.selectCourseById(this.courseId)
             .pipe(
-                first() // take(2)
+                // first() // take(2)
             );
 
         /* In order for the forkJoin operator to run, you need to force the 
         completion of the observable (this.course$) to be completed. This can
         be done by piping the first operator which will force the completion 
         of an existing observable after the first value gets emitted. */
-        forkJoin(this.course$, this.loadLessons()).subscribe(console.log)
+        // forkJoin(this.course$, this.loadLessons()).subscribe(console.log)
+
+
+        this.loadLessons()
+                .pipe(
+                    withLatestFrom(this.course$)
+                )
+                .subscribe(([lessons, course]) => {
+
+                    console.log("lessons", lessons);
+
+                    console.log("course", course);
+
+                })
             
     }
 
