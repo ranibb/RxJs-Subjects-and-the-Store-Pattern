@@ -22,11 +22,12 @@ export class AboutComponent implements OnInit {
         subject.next(1);
         subject.next(2);
         subject.next(3);
-        subject.complete();
+        // subject.complete();
 
         setTimeout(() => {
 
             series1$.subscribe(val => console.log("late sub:" + val));
+            subject.next(4);
 
         }, 3000)
     }
