@@ -11,7 +11,7 @@ import {
     concatMap,
     switchMap,
     withLatestFrom,
-    concatAll, shareReplay, first
+    concatAll, shareReplay, first, take
 } from 'rxjs/operators';
 import {merge, fromEvent, Observable, concat, forkJoin} from 'rxjs';
 import {Lesson} from '../model/lesson';
@@ -43,7 +43,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
         this.course$ = this.store.selectCourseById(this.courseId)
             .pipe(
-                first()
+                first() // take(2)
             );
 
         /* In order for the forkJoin operator to run, you need to force the 
