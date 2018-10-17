@@ -11,9 +11,9 @@ import {
     concatMap,
     switchMap,
     withLatestFrom,
-    concatAll, shareReplay
+    concatAll, shareReplay, first
 } from 'rxjs/operators';
-import {merge, fromEvent, Observable, concat} from 'rxjs';
+import {merge, fromEvent, Observable, concat, forkJoin} from 'rxjs';
 import {Lesson} from '../model/lesson';
 import {createHttpObservable} from '../common/util';
 import { Store } from '../common/stroe.service';
@@ -41,8 +41,17 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
         this.courseId = this.route.snapshot.params['id'];
 
-        this.course$ = this.store.selectCourseById(this.courseId);
+        this.course$ = this.store.selectCourseById(this.courseId)
+            .pipe(
+                first()
+            );
 
+        /* In order for the forkJoin operator to run, you need to force the 
+        completion of the observable (this.course$) to be completed. This can
+        be done by piping the first operator which will force the completion 
+        of an existing observable after the first value gets emitted. */
+        forkJoin(this.course$, this.loadLessons()).subscribe(console.log)
+            
     }
 
     ngAfterViewInit() {
