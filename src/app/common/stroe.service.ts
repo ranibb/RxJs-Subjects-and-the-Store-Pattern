@@ -28,4 +28,20 @@ export class Store {
 
   }
 
+  selectBeginnerCourses() {
+    return this.filterByCategory("BEGINNER");
+  }
+
+  selectAdvancedCourses() {
+    return this.filterByCategory("ADVANCED");
+  }
+
+  filterByCategory(category: string) {
+    return this.courses$
+    .pipe(
+        map(courses => courses
+            .filter(course => course.category == category))
+    );
+  }
+
 }

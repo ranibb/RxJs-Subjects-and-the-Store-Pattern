@@ -23,19 +23,9 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
 
-        const courses$ = this.store.courses$;
+        this.beginnerCourses$ = this.store.selectBeginnerCourses();
 
-        this.beginnerCourses$ = courses$
-            .pipe(
-                map(courses => courses
-                    .filter(course => course.category == 'BEGINNER'))
-            );
-
-        this.advancedCourses$ = courses$
-            .pipe(
-                map(courses => courses
-                    .filter(course => course.category == 'ADVANCED'))
-            );
+        this.advancedCourses$ = this.store.selectAdvancedCourses();
 
     }
 
